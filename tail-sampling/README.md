@@ -166,24 +166,3 @@ If you're having trouble seeing the services in Jaeger UI:
   docker compose logs otel-collector | grep tail_sampling
   ```
 
-## Video Talking Points
-
-1. **Introduction to Tail Sampling**:
-   - Decision made after the trace is complete
-   - Collects more context for better decisions
-   - Preserves important traces while reducing volume
-
-2. **The Problem with Head Sampling**:
-   - Decisions are made at span creation time
-   - No knowledge of future spans or trace outcome
-   - May miss important traces (errors, high latency)
-
-3. **Demonstration Flow**:
-   - Show the application generating mixed traffic
-   - Explain the sampling rules in the collector
-   - Compare the number of traces generated vs captured
-   - Verify that all error and high-latency traces are preserved
-
-4. **Splunk Observability Cloud Migration**:
-   - Show how the same sampling rules apply
-   - Only the export destination changes
