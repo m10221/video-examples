@@ -126,7 +126,7 @@ This demo uses the Splunk Distribution of OpenTelemetry Collector (`quay.io/sign
 
 3. Even without Splunk credentials, you can still use all demo features with Jaeger visualization.
 
-4. For more details on Splunk Observability Cloud integration, see [splunk_integration.md](splunk_integration.md).
+4. For more details on Splunk Observability Cloud integration, see [README_SPLUNK.md](README_SPLUNK.md).
 
 ## Troubleshooting
 
