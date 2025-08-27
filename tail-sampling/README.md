@@ -2,6 +2,36 @@
 
 This project demonstrates tail sampling with OpenTelemetry for a video presentation.
 
+## What is Head vs. Tail Sampling?
+
+### Head Sampling
+
+Head sampling makes sampling decisions at the source (in the application) before traces are sent to the collector:
+
+```
+    Application                 OpenTelemetry Collector       Observability Platform
+       +-----+                        +-------+                   +---------+
+       |     |                        |       |                   |         |
+       |     |----Selected Traces---->|       |------------------>|         |
+       |     |    (e.g., 10%)         |       |                   |         |
+       |     |                        |       |                   |         |
+       +-----+                        +-------+                   +---------+
+```
+
+### Tail Sampling
+
+Tail sampling sends all traces to the collector, which then makes sampling decisions before exporting:
+
+```
+    Application                 OpenTelemetry Collector       Observability Platform
+       +-----+                        +-------+                   +---------+
+       |     |                        |       |                   |         |
+       |     |------All Traces------->|       |---Selected------->|         |
+       |     |                        |       |    Traces         |         |
+       |     |                        |       |                   |         |
+       +-----+                        +-------+                   +---------+
+```
+
 ## Project Overview
 
 This demo showcases tail sampling using:
