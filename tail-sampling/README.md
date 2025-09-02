@@ -85,6 +85,33 @@ tail-sampling/
 
 3. View traces in Jaeger UI: http://localhost:16686
 
+### Using the generic config applier (recommended)
+
+- Apply any collector config and restart only the collector:
+  - From repo root:
+    - `./utils/apply_collector_config.sh --example-dir tail-sampling --config ./ottl-intro/otel-collector-config-ottl-demo.yaml --services "otel-collector"`
+  - Or switch to a different config (auto-detects CONFIG_TYPE from target name):
+    - `./utils/apply_collector_config.sh --example-dir tail-sampling --config ./tail-sampling/otel-collector-config-with-sampling.yaml --target otel-collector-config-with-sampling.yaml`
+
+### Use the shared Order Service app (optional)
+
+- Build and run order-service from `apps/order-service-flask/` via a compose override:
+  - `(cd tail-sampling && docker compose -f docker-compose.yaml -f docker-compose.order-service-shared.override.yaml up -d --build order-service)`
+
+Notes:
+- If you run Docker Compose from repo root and rely on Splunk env vars in `.env`, pass both compose files with full paths, e.g. `docker compose -f tail-sampling/docker-compose.yaml -f tail-sampling/docker-compose.order-service-shared.override.yaml up -d`.
+- Existing `switch_collector_config.sh` still works; the utility script is more flexible for new configs.
+
+### Prefer running the shared Order Service standalone (no override)
+
+- The shared app can run independently from `apps/order-service-flask/` with its own `docker-compose.yaml`.
+  - See `apps/order-service-flask/README.md` for details.
+  - Example:
+    - `(cd apps/order-service-flask && COMPOSE_PROJECT_NAME=ottl-intro docker compose up -d --build)`
+    - This starts the app at http://localhost:5000 and names the container like `ottl-intro-order-service-1`.
+  - Ensure your collector (this project) is running and listening on host `:4317`.
+    - Default exporter endpoint in the app: `http://localhost:4317`
+
 ### Before/After Tail Sampling Comparison
 
 The demo includes a script to switch between two collector configurations to demonstrate the impact of tail sampling:

@@ -1,0 +1,15 @@
+services:
+  order-service:
+    build:
+      context: .
+    container_name: ${COMPOSE_PROJECT_NAME:-ottl-intro}-order-service-1
+    environment:
+      # Point to your collector (host or container). Default assumes local collector on host.
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://host.docker.internal:4317}
+      # Service naming (can be overridden per demo)
+      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME:-no-order-service}
+      - CONFIG_TYPE=${CONFIG_TYPE:-no}
+      - ENVIRONMENT=${ENVIRONMENT:-moss-demo-environment}
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
