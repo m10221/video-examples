@@ -6,8 +6,8 @@ services:
     environment:
       # Point to your collector (host or container). Default assumes local collector on host.
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://host.docker.internal:4317}
-      # Service naming (can be overridden per demo)
-      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME:-no-order-service}
+      # Service naming (can be overridden per demo); prefix-only
+      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME:-order-service}
       - CONFIG_TYPE=${CONFIG_TYPE:-no}
       - ENVIRONMENT=${ENVIRONMENT:-moss-demo-environment}
     ports:
