@@ -23,7 +23,7 @@ processors:
           - set(name, "checkout - ERROR") where attributes["scenario"] == "error"
       - context: resource
         statements:
-          - set(attributes["service.namespace"], "tail-sampling-demo")
+          - set(attributes["service.namespace"], "ottl-intro")
           - set(attributes["env"], attributes["deployment.environment"]) where attributes["deployment.environment"] != nil
 
   batch:
