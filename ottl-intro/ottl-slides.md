@@ -95,7 +95,7 @@ Slide 10 — Running the demo (Compose)
 - Start stack: (cd tail-sampling && docker compose up -d)
 - Apply config: ./utils/apply_collector_config.sh --example-dir tail-sampling --config ./ottl-intro/otel-collector-config-ottl-demo.yaml --services "otel-collector"
 - Optional shared app: (cd tail-sampling && docker compose -f docker-compose.yaml -f docker-compose.order-service-shared.override.yaml up -d --build order-service)
-- Generate load: (cd tail-sampling && ./generate_load.sh 100 0.05)
+- Generate load: ./utils/generate_load.sh 100 0.05
 
 Notes:
 - Keep commands copyable from slides.

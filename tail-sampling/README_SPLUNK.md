@@ -57,7 +57,7 @@ This shows the current configuration, including whether Splunk export is enabled
 After switching to the desired configuration, generate some load to see the difference in sampled traces:
 
 ```bash
-./generate_load.sh
+./utils/generate_load.sh
 ```
 
 ## View Traces

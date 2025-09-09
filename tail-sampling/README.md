@@ -59,7 +59,6 @@ tail-sampling/
 │   ├── Dockerfile           # Container definition for the app
 │   └── requirements.txt     # Python dependencies
 ├── docker-compose.yaml      # Orchestrates all services
-├── generate_load.sh         # Script to generate test traffic
 ├── otel-collector-config-with-sampling.yaml  # OTel Collector config with tail sampling
 ├── otel-collector-config-no-sampling.yaml  # OTel Collector config without tail sampling
 ├── otel-collector-config-with-sampling-splunk.yaml  # Tail sampling with Splunk export
@@ -80,7 +79,7 @@ tail-sampling/
 
 2. Generate some load to see sampling in action:
    ```
-   ./generate_load.sh
+   ./utils/generate_load.sh
    ```
 
 3. View traces in Jaeger UI: http://localhost:16686
@@ -124,7 +123,7 @@ The demo includes a script to switch between two collector configurations to dem
 
 2. Generate load and observe all traces in Jaeger:
    ```
-   ./generate_load.sh
+   ./utils/generate_load.sh
    ```
 
 3. Switch to tail sampling configuration:
@@ -135,7 +134,7 @@ The demo includes a script to switch between two collector configurations to dem
 
 4. Generate load again and observe how tail sampling affects trace volume:
    ```
-   ./generate_load.sh
+   ./utils/generate_load.sh
    ```
 
 5. Compare the number of traces and their characteristics in Jaeger UI. You can easily distinguish between the sampling modes by selecting the appropriate service name in the Jaeger UI dropdown.
@@ -198,7 +197,7 @@ If you're having trouble seeing the services in Jaeger UI:
 
 2. Verify that you've generated some load:
    ```
-   ./generate_load.sh
+   ./utils/generate_load.sh
    ```
 
 3. If changes to code aren't reflected after switching configs:

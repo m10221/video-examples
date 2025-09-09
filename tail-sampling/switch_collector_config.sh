@@ -199,7 +199,7 @@ if [ "$1" != "status" ]; then
 
     echo
     echo -e "${YELLOW}Next steps:${NC}"
-    echo "1. Run './generate_load.sh' to generate traces"
+    echo "1. Run './utils/generate_load.sh' to generate traces"
     echo "2. Visit Jaeger UI to see results: http://localhost:16686"
 fi
 

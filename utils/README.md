@@ -41,5 +41,5 @@ Quick start (infra + shared app):
 (cd infra && COMPOSE_PROJECT_NAME=ottl-intro docker compose up -d)
 ./utils/apply_collector_config.sh --example-dir infra --config ./ottl-intro/otel-collector-config-ottl-demo.yaml --services "otel-collector" --config-type no
 (cd apps/order-service-flask && COMPOSE_PROJECT_NAME=ottl-intro docker compose up -d --build)
-(cd tail-sampling && ./generate_load.sh 25 0.02)
+./utils/generate_load.sh 25 0.02
 ```

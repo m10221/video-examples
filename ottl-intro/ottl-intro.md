@@ -93,7 +93,7 @@ Full, runnable config placed at `ottl-intro/otel-collector-config-ottl-demo.yaml
 2. __Apply the OTTL config__ (using the reusable utility script)
    - `./utils/apply_collector_config.sh --example-dir tail-sampling --config ./ottl-intro/otel-collector-config-ottl-demo.yaml`
 3. __Generate load__
-   - `(cd tail-sampling && ./generate_load.sh 100 0.05)`
+   - `./utils/generate_load.sh 100 0.05`
 4. __Open Jaeger__
    - http://localhost:16686
    - Service: `no-order-service`

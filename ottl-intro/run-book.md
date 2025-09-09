@@ -31,7 +31,7 @@ COMPOSE_PROJECT_NAME=ottl-intro ./utils/apply_collector_config.sh \
 ## Generate load
 - Sends requests to `http://localhost:5000/checkout`
 ```bash
-(cd tail-sampling && ./generate_load.sh 25 0.02)
+./utils/generate_load.sh 25 0.02
 ```
 
 ## Validate in Jaeger UI
@@ -72,7 +72,7 @@ App (Flask):
   - Resource: `service.namespace = ottl-intro`
 - Generate load:
   ```bash
-  (cd tail-sampling && ./generate_load.sh 25 0.02)
+  ./utils/generate_load.sh 25 0.02
   ```
 - Splunk Observability Cloud (or Jaeger):
   - Filters: `service.name=order-service`, `deployment.environment=moss-demo-environment`, `service.namespace=ottl-intro`
