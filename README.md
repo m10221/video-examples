@@ -2,6 +2,14 @@
 
 A collection of runnable OpenTelemetry demo scenarios and utilities.
 
+## What's in this repo
+
+- `infra/` — shared stack with Jaeger and an OpenTelemetry Collector (reads root `.env`).
+- `apps/order-service-flask/` — reusable Flask app instrumented with OpenTelemetry.
+- `tail-sampling/` — a tail sampling demo with multiple collector configs and a switch script.
+- `ottl-intro/` — OTTL (OpenTelemetry Transformation Language) demo config and docs.
+- `utils/` — helper scripts (`scaffold_demo.sh`, `apply_collector_config.sh`, `generate_load.sh`).
+
 ## Quick Start: Scaffold a New Demo with the Shared App
 
 Use the shared Flask order service as a starting point for new demos.
