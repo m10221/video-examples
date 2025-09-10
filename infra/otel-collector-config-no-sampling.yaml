@@ -11,21 +11,7 @@ processors:
     check_interval: 1s
     limit_percentage: 80
     spike_limit_percentage: 25
-
-  transform/ottl_demo:
-    error_mode: ignore
-    trace_statements:
-      - context: span
-        statements:
-          - set(attributes["demo.ottl"], "applied")
-          - set(attributes["issue_detected"], true) where attributes["issue_detected"] == "true"
-          - set(attributes["scenario_group"], "unhappy") where attributes["scenario"] == "error" or attributes["scenario"] == "high_latency"
-          - set(name, "checkout - ERROR") where attributes["scenario"] == "error"
-      - context: resource
-        statements:
-          - set(attributes["service.namespace"], "ottl-intro")
-          - set(attributes["env"], attributes["deployment.environment"]) where attributes["deployment.environment"] != nil
-
+  
   batch:
     timeout: 1s
     send_batch_size: 8192
@@ -38,7 +24,7 @@ exporters:
       insecure: true
   debug:
     verbosity: detailed
-  # Splunk exporter for traces using OTLP HTTP
+  # Splunk exporter for traces using OTLP HTTP (replacement for deprecated SAPM)
   otlphttp/splunk:
     traces_endpoint: "https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
     headers:
@@ -56,9 +42,9 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, transform/ottl_demo, batch]
+      processors: [memory_limiter, batch]
       exporters: [otlp, debug]
     traces/splunk:
       receivers: [otlp]
-      processors: [memory_limiter, transform/ottl_demo, batch]
+      processors: [memory_limiter, batch]
       exporters: [otlphttp/splunk, debug]
