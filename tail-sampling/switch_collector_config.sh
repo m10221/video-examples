@@ -27,21 +27,28 @@ fi
 
 # Check for .env file when using Splunk options
 check_splunk_env() {
-    if [ ! -f ./.env ]; then
+    # Prefer a local .env in tail-sampling/, but fall back to repo root ../.env
+    if [ -f ./.env ]; then
+        ENV_PATH="./.env"
+    elif [ -f ../.env ]; then
+        ENV_PATH="../.env"
+    else
         echo -e "${YELLOW}Error:${NC} .env file not found"
-        echo "Please create a .env file with your Splunk credentials:"
-        echo "SPLUNK_ACCESS_TOKEN=your-access-token"
-        echo "SPLUNK_REALM=your-realm (e.g., us1)"
+        echo "Please create a .env file at the repo root with your Splunk credentials:"
+        echo "  ./video-examples/.env with:"
+        echo "    SPLUNK_ACCESS_TOKEN=your-access-token"
+        echo "    SPLUNK_REALM=your-realm (e.g., us1)"
         exit 1
     fi
-    
-    # Load environment variables from .env file
-    source ./.env
-    
+
+    # Load environment variables
+    # shellcheck source=/dev/null
+    source "$ENV_PATH"
+
     # Check if required variables are set
     if [ -z "$SPLUNK_ACCESS_TOKEN" ] || [ -z "$SPLUNK_REALM" ]; then
         echo -e "${YELLOW}Error:${NC} Missing required environment variables"
-        echo "Please make sure SPLUNK_ACCESS_TOKEN and SPLUNK_REALM are set in your .env file"
+        echo "Please make sure SPLUNK_ACCESS_TOKEN and SPLUNK_REALM are set in $ENV_PATH"
         exit 1
     fi
 }
