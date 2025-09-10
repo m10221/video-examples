@@ -6,6 +6,8 @@
 #   make viz-sampling        # Render TailSampling (placeholder)
 #   make viz-local           # Render locally using host manim (venv)
 #   make viz-clean           # Remove visualization outputs
+#   make viz-frame           # Export a single PNG frame (container). Use FRAME=N to pick frame
+#   make viz-frame-local     # Export a single PNG frame locally (venv). Use FRAME=N
 
 Q ?= h
 
@@ -33,6 +35,18 @@ viz-sampling:
 .PHONY: viz-local
 viz-local:
 	visualization/scripts/render.sh otel $(Q)
+
+.PHONY: viz-frame
+viz-frame:
+	FRAME=$(FRAME) visualization/scripts/render_docker.sh otel $(Q) frame
+
+.PHONY: viz-frame-local
+viz-frame-local:
+	if [ -n "$(FRAME)" ]; then \
+		manim -p -q$(Q) visualization/scenes/otel_pipeline.py OTelPipelineScene --format=png --frame $(FRAME); \
+	else \
+		manim -p -q$(Q) visualization/scenes/otel_pipeline.py OTelPipelineScene -s; \
+	fi
 
 .PHONY: viz-clean
 viz-clean:
