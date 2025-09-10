@@ -47,6 +47,26 @@ visualization/scripts/render.sh otel
 visualization/scripts/render.sh sampling
 ```
 
+## Containerized Rendering (no local venv)
+
+You can render scenes inside a Docker container using the provided `Dockerfile` and `docker-compose.yaml`.
+
+### One-time build
+```
+(cd visualization && docker compose build)
+```
+
+### Render with Docker
+```
+# OTel pipeline scene, high quality
+visualization/scripts/render_docker.sh otel h
+
+# Tail sampling comparison (placeholder)
+visualization/scripts/render_docker.sh sampling m
+```
+
+Outputs are written under `visualization/output/` in the repo (mounted into the container), and Manim's default `media/` directory inside the mounted workspace.
+
 ## Tips
 
 - Customize colors and fonts in the scene files for brand alignment.

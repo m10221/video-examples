@@ -1,0 +1,10 @@
+services:
+  manim:
+    build:
+      context: .
+    working_dir: /workspace
+    volumes:
+      - ..:/workspace:delegated
+      - ./output:/workspace/visualization/output
+    # Entry handled by Dockerfile (manim). Override via 'command'.
+    # Example commands are provided in README and makefile.
