@@ -43,3 +43,67 @@ Quick start (infra + shared app):
 (cd apps/order-service-flask && COMPOSE_PROJECT_NAME=ottl-intro docker compose up -d --build)
 ./utils/generate_load.sh 25 0.02
 ```
+
+## scaffold_demo.sh
+
+Scaffold a new demo directory pre-wired with the shared order service app.
+
+### Usage
+```
+utils/scaffold_demo.sh --name <demo-name> [--port 5000] [--service-name my-demo-order-service] \
+  [--collector host|service] [--collector-service-name otel-collector]
+```
+
+- `--name` (required): target demo directory to create
+- `--port` (optional, default 5000): host port to map to the Flask app's 5000
+- `--service-name` (optional): OTEL service name to set inside the app
+- `--collector` (optional, default host): whether to point to a collector on the `host` or a `service` in the same compose
+- `--collector-service-name` (optional, default otel-collector): service name to use when `--collector service`
+
+Creates:
+- `<name>/app/` copied from `apps/order-service-flask/`
+- `<name>/docker-compose.yaml`
+- `<name>/README.md`
+
+### End-to-end test flow
+
+1) Spin down any existing stacks (avoid port/name conflicts):
+```
+(cd tail-sampling && docker compose down)
+(cd infra && docker compose -p ottl-intro down || true)
+(cd infra && docker compose down || true)
+(cd apps/order-service-flask && docker compose -p ottl-intro down || true)
+(cd apps/order-service-flask && docker compose down || true)
+```
+
+2) Scaffold a demo:
+```
+utils/scaffold_demo.sh --name demo-scaffold
+```
+
+3) Start infra (Jaeger + OTel Collector) with a unique project name:
+```
+(cd infra && COMPOSE_PROJECT_NAME=ottl-scaffold docker compose up -d)
+```
+
+4) Build and start the scaffolded app:
+```
+(cd demo-scaffold && docker compose build && docker compose up -d)
+```
+
+5) Verify logs (last 2 minutes):
+```
+(cd infra && docker compose -p ottl-scaffold logs --since 2m otel-collector | tail -n 120)
+(cd demo-scaffold && docker compose logs --since 2m order-service | tail -n 120)
+```
+
+6) Generate load:
+```
+./utils/generate_load.sh 25 0.02
+```
+
+7) Optional teardown when finished:
+```
+(cd demo-scaffold && docker compose down)
+(cd infra && docker compose -p ottl-scaffold down)
+```

@@ -9,13 +9,13 @@ This document explains how to use Splunk Observability Cloud with the tail sampl
 
 ## Setup
 
-1. Create a `.env` file in the project root with your Splunk credentials:
+1. Create a `.env` file in the project root with your Splunk credentials (run these commands from the repo root):
    ```
    SPLUNK_ACCESS_TOKEN=your-access-token
    SPLUNK_REALM=us1  # or your specific realm
    ```
 
-   You can copy from the template and add your values:
+   You can copy from the template and add your values (from the repo root):
    ```
    cp .env.example .env
    ```
