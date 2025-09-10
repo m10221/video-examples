@@ -1,0 +1,24 @@
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    container_name: ${COMPOSE_PROJECT_NAME:-infra}-jaeger-1
+    ports:
+      - "16686:16686" # Jaeger UI
+    restart: unless-stopped
+
+  otel-collector:
+    image: quay.io/signalfx/splunk-otel-collector:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-infra}-otel-collector-1
+    command: ["--config=/etc/otel/config.yaml"]
+    volumes:
+      - ./otel-collector-config-no-sampling.yaml:/etc/otel/config.yaml:ro
+    env_file:
+      - ../.env
+    ports:
+      - "4317:4317" # OTLP gRPC
+      - "4318:4318" # OTLP HTTP
+      - "13133:13133" # health_check
+      - "1777:1777"   # pprof
+    depends_on:
+      - jaeger
+    restart: unless-stopped
