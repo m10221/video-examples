@@ -49,6 +49,28 @@ Use the shared Flask order service as a starting point for new demos.
 # Jaeger UI: http://localhost:16686
 ```
 
+### Enable Splunk export (optional)
+
+Ensure your root `.env` has Splunk credentials:
+
+```
+SPLUNK_ACCESS_TOKEN=your-ingest-token
+SPLUNK_REALM=us1
+```
+
+Apply a Splunk-enabled collector config to the infra stack and restart only the collector:
+
+```
+./utils/apply_collector_config.sh \
+  --example-dir infra \
+  --config ./tail-sampling/otel-collector-config-no-sampling-splunk.yaml \
+  --target otel-collector-config-no-sampling.yaml \
+  --services "otel-collector" \
+  --config-type no
+```
+
+Generate load again and verify in Splunk APM (filter by `service.name=my-demo-order-service`).
+
 ## Utilities
 
 - `./utils/scaffold_demo.sh` — scaffold a new demo directory using the shared app
