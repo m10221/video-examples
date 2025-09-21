@@ -19,20 +19,15 @@ Start the stack (Collector scrapes the app directly; no Prometheus server requir
 (cd prom-metrics && COMPOSE_PROJECT_NAME=prom-demo docker compose up -d --build)
 ```
 
-Hit the app to generate metrics:
+Hit the app to generate metrics (compatible with your existing load generator that calls /checkout on port 5000):
 ```bash
 # Normal
-curl -s http://localhost:8000/work > /dev/null
-# Slow
-curl -s "http://localhost:8000/work?mode=slow" > /dev/null
-# Error
-curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:8000/work?mode=error"
+curl -s http://localhost:5000/checkout > /dev/null
+# Error path occurs randomly; to force a quick mix, just loop
 
 # Quick loop to generate a mix
 for i in {1..10}; do
-  curl -s http://localhost:8000/work > /dev/null
-  curl -s "http://localhost:8000/work?mode=slow" > /dev/null
-  curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:8000/work?mode=error"
+  curl -s http://localhost:5000/checkout > /dev/null
   sleep 0.2
 done
 ```
@@ -40,7 +35,7 @@ done
 Validate locally:
 ```bash
 # App metrics endpoint
-curl -s http://localhost:8000/metrics | head -n 40
+curl -s http://localhost:5000/metrics | head -n 40
 
 # Collector logs
 (cd prom-metrics && docker compose -p prom-demo logs --since 2m otel-collector | tail -n 120)

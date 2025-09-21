@@ -6,7 +6,7 @@ receivers:
           metrics_path: /metrics
           scrape_interval: 5s
           static_configs:
-            - targets: ['demo-app:8000']
+            - targets: ['demo-app:5000']
 
 processors:
   resource:
