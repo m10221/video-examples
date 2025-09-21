@@ -1,0 +1,23 @@
+services:
+  demo-app:
+    build:
+      context: ./app
+    container_name: ${COMPOSE_PROJECT_NAME:-prom-demo}-demo-app-1
+    environment:
+      - FLASK_ENV=production
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  otel-collector:
+    image: quay.io/signalfx/splunk-otel-collector:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-prom-demo}-otel-collector-1
+    env_file:
+      - ../.env
+    volumes:
+      - ./otel-collector-config-prom-demo.yaml:/etc/otel/config.yaml:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "13133:13133"
+    restart: unless-stopped
