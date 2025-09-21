@@ -55,3 +55,30 @@ docker compose -p prom-demo -f prom-metrics/docker-compose.yaml down
 - This demo uses the Collector’s `prometheus` receiver with `scrape_configs` (Prometheus-compatible). No Prometheus server is required.
 - The Collector converts Prometheus exposition to OTLP metrics and exports to Splunk via the `signalfx` exporter.
 - You can add more targets to `receivers.prometheus.config.scrape_configs` to scrape multiple apps/exporters.
+
+## Prometheus Demo in Splunk Observability Cloud
+
+Use these filters on all charts:
+- `service.namespace=prom-demo`
+- `deployment.environment=moss-demo-environment`
+
+Then set `service.name` per source:
+- Flask app: `prom-flask`
+- Node Exporter: `node-exporter`
+- NGINX Exporter: `nginx-exporter`
+
+Suggested charts (fast demo)
+- Request rate (Flask)
+  - Metric: `flask_http_request_total` (rate/sec)
+  - Group by: `status` (optionally `endpoint`, `method`)
+- Load averages (Node Exporter)
+  - Metrics: `node_load1`, `node_load5`, `node_load15` (mean)
+  - Y-axis max ≈ host CPU cores (e.g., 11). Load is not a percent.
+- NGINX requests or connections
+  - Requests rate: `nginx_http_requests_total` (rate/sec), or
+  - Connections by state: `nginx_connections` grouped by `state`
+
+If metrics aren’t visible immediately, wait 30–60s and verify the Collector logs:
+```bash
+(cd prom-metrics && docker compose -p prom-demo logs --since 2m otel-collector | tail -n 200)
+```
