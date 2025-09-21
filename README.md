@@ -9,6 +9,7 @@ A collection of runnable OpenTelemetry demo scenarios and utilities.
 - `tail-sampling/` — a tail sampling demo with multiple collector configs and a switch script.
 - `ottl-intro/` — OTTL (OpenTelemetry Transformation Language) demo config and docs.
 - `utils/` — helper scripts (`scaffold_demo.sh`, `apply_collector_config.sh`, `generate_load.sh`).
+- `visualization/` — Manim-based, presentation-ready animations for tutorials/slides. See `visualization/README.md`.
 
 ## Quick Start: Scaffold a New Demo with the Shared App
 

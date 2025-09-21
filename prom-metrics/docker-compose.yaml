@@ -9,9 +9,20 @@ services:
       - "5000:5000"
     restart: unless-stopped
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: ${COMPOSE_PROJECT_NAME:-prom-demo}-node-exporter-1
+    command:
+      - --path.rootfs=/
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+
   otel-collector:
     image: quay.io/signalfx/splunk-otel-collector:latest
     container_name: ${COMPOSE_PROJECT_NAME:-prom-demo}-otel-collector-1
+    environment:
+      - SPLUNK_CONFIG=/etc/otel/config.yaml
     env_file:
       - ../.env
     volumes:
