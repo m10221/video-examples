@@ -14,6 +14,13 @@ receivers:
           scrape_interval: 10s
           static_configs:
             - targets: ['node-exporter:9100']
+  prometheus/nginx:
+    config:
+      scrape_configs:
+        - job_name: nginx-exporter
+          scrape_interval: 10s
+          static_configs:
+            - targets: ['nginx-exporter:9113']
 
 processors:
   resource/flask:
@@ -21,6 +28,17 @@ processors:
       - action: upsert
         key: service.name
         value: prom-flask
+      - action: upsert
+        key: service.namespace
+        value: prom-demo
+      - action: upsert
+        key: deployment.environment
+        value: moss-demo-environment
+  resource/nginx:
+    attributes:
+      - action: upsert
+        key: service.name
+        value: nginx-exporter
       - action: upsert
         key: service.namespace
         value: prom-demo
@@ -57,6 +75,10 @@ service:
     metrics/node:
       receivers: [prometheus/node]
       processors: [resource/node, batch]
+      exporters: [signalfx, debug]
+    metrics/nginx:
+      receivers: [prometheus/nginx]
+      processors: [resource/nginx, batch]
       exporters: [signalfx, debug]
   telemetry:
     logs:
