@@ -12,19 +12,17 @@ How we’ll demo it
   - Custom Flask app exposing /metrics (via prometheus_flask_exporter)
   - NGINX via nginx-prometheus-exporter (scrapes /stub_status)
   - Node Exporter for host/system metrics
-- Collector pipeline (high level):
-  Prometheus receiver(s) -> resource tagging (service.name, service.namespace, environment) -> Signalfx exporter -> Splunk Observability Cloud
+- Pipeline: adds resource tags to Prometheus metrics and sends them to Splunk Observability Cloud.
 
 What you’ll see
-- In Splunk Observability Cloud: request rate and latency (Flask), host load (Node), and NGINX requests/connections
+- In Splunk Observability Cloud: request rate (Flask), host load (Node), and NGINX requests/connections
 
 ---
 
 # Slide 2 — Key Takeaways
 
-- Prometheus scraping without running Prometheus: the Collector pulls /metrics directly
-- One ingestion plane: add or remove targets centrally in Collector config
-- Familiar exporters work out of the box: Node Exporter, NGINX exporter, custom apps
-- Clean resource context: consistent filters via service.name, service.namespace, environment
-- Fast validation: curl endpoints locally; confirm in Metric Finder; build a couple of high-signal charts
-- Extensible: add more targets or processors later (transforms, aggregation) without changing apps
+ - The Collector scrapes Prometheus endpoints directly, so you don’t need to run a Prometheus server; it pulls `/metrics` and forwards to Splunk Observability Cloud.
+ - The Collector acts as a single ingestion plane, so I can add or remove scrape targets centrally in one configuration file.
+ - Common exporters work out of the box, including Node Exporter, the NGINX Prometheus exporter, and custom apps.
+ - Consistent resource tags—such as `service.name`, `service.namespace`, and `deployment.environment`—make filtering and grouping straightforward in Splunk Observability Cloud.
+ - The setup stays flexible: I can add new scrape targets and make naming/label tweaks in the Collector config instead of changing exporter containers or application code.
